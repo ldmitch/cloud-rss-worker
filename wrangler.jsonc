@@ -13,7 +13,7 @@
 	"kv_namespaces": [
 		{
 			"binding": "ARTICLES",
-			"id": "YOUR_KV_NAMESPACE_ID"
+			"id": "f960d237581b41d2980372ab30b3e92e"
 		}
 	],
 	"triggers": {
