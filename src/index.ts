@@ -200,7 +200,11 @@ export default {
 
     // Store articles in KV
     await env.ARTICLES.put("all_articles", JSON.stringify(allArticles));
+    
+    // Store last update timestamp in KV
+    const currentTimestamp = Math.floor(Date.now() / 1000).toString(); // Unix timestamp in seconds
+    await env.ARTICLES.put("last_update", currentTimestamp);
 
-    console.log(`Successfully refreshed ${allArticles.length} articles`);
+    console.log(`Successfully refreshed ${allArticles.length} articles at ${new Date().toISOString()}`);
   },
 } satisfies ExportedHandler<Env>;
