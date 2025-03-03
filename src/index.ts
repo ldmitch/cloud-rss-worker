@@ -1,6 +1,6 @@
 import type { ScheduledController } from "@cloudflare/workers-types";
 import { DOMParser } from "@xmldom/xmldom";
-import sourcesData from "../test-sources.json";
+import sourcesData from "../sources.json";
 
 interface Article {
   id: string;
@@ -33,8 +33,8 @@ function hashUrl(url: string): string {
   return Math.abs(hash).toString(36);
 }
 
-// Function to fetch and parse RSS feeds
-async function fetchAndParseRSS(url: string, sourceName: string): Promise<Article[]> {
+// Function to fetch and parse RSS/ATOM feeds
+async function fetchAndParseFeed(url: string, sourceName: string): Promise<Article[]> {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -51,26 +51,81 @@ async function fetchAndParseRSS(url: string, sourceName: string): Promise<Articl
       throw new Error(`Failed to parse XML for ${url}: ${parserError.textContent}`);
     }
 
-    const items = xmlDoc.getElementsByTagName("item");
     const articles: Article[] = [];
-
-    for (const item of Array.from(items)) {
-      const title = item.getElementsByTagName("title")[0]?.textContent || "";
-      const link = item.getElementsByTagName("link")[0]?.textContent || "";
-      const description = item.getElementsByTagName("description")[0]?.textContent || "";
-      const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
-
-      if (link && title && pubDate) {
-        // Only include articles from the last 36 hours
-        if (isWithinLast36Hours(pubDate)) {
-          articles.push({
-            id: hashUrl(link),
-            url: link,
-            title,
-            snippet: description,
-            source: sourceName,
-            publicationDatetime: pubDate,
-          });
+    
+    // Check if this is an RSS feed (has <item> elements)
+    const rssItems = xmlDoc.getElementsByTagName("item");
+    if (rssItems.length > 0) {
+      // Process as RSS feed
+      for (const item of Array.from(rssItems)) {
+        const title = item.getElementsByTagName("title")[0]?.textContent || "";
+        const link = item.getElementsByTagName("link")[0]?.textContent || "";
+        const description = item.getElementsByTagName("description")[0]?.textContent || "";
+        const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
+        
+        if (link && title && pubDate) {
+          // Only include articles from the last 48 hours
+          if (isWithinLast48Hours(pubDate)) {
+            articles.push({
+              id: hashUrl(link),
+              url: link,
+              title,
+              snippet: description,
+              source: sourceName,
+              publicationDatetime: pubDate,
+            });
+          }
+        }
+      }
+    } else {
+      // Check if this is an ATOM feed (has <entry> elements)
+      const atomEntries = xmlDoc.getElementsByTagName("entry");
+      if (atomEntries.length > 0) {
+        // Process as ATOM feed
+        for (const entry of Array.from(atomEntries)) {
+          const title = entry.getElementsByTagName("title")[0]?.textContent || "";
+          
+          // In ATOM, find the appropriate link (prefer alternate)
+          let link = "";
+          const linkElements = entry.getElementsByTagName("link");
+          
+          // First try to find link with rel="alternate"
+          for (const linkElement of Array.from(linkElements)) {
+            const rel = linkElement.getAttribute("rel");
+            if (rel === "alternate" || !rel) {
+              link = linkElement.getAttribute("href") || "";
+              break;
+            }
+          }
+          
+          // If no alternate link found, use the first link
+          if (!link && linkElements[0]) {
+            link = linkElements[0].getAttribute("href") || "";
+          }
+          
+          // Content could be in content or summary elements
+          const content = entry.getElementsByTagName("content")[0]?.textContent || "";
+          const summary = entry.getElementsByTagName("summary")[0]?.textContent || "";
+          const description = content || summary;
+          
+          // ATOM uses <published> or <updated> instead of pubDate
+          const published = entry.getElementsByTagName("published")[0]?.textContent || "";
+          const updated = entry.getElementsByTagName("updated")[0]?.textContent || "";
+          const pubDate = published || updated;
+          
+          if (link && title && pubDate) {
+            // Only include articles from the last 48 hours
+            if (isWithinLast48Hours(pubDate)) {
+              articles.push({
+                id: hashUrl(link),
+                url: link,
+                title,
+                snippet: description,
+                source: sourceName,
+                publicationDatetime: pubDate,
+              });
+            }
+          }
         }
       }
     }
@@ -83,13 +138,13 @@ async function fetchAndParseRSS(url: string, sourceName: string): Promise<Articl
   }
 }
 
-// Check if a publication date is within the last 36 hours
-function isWithinLast36Hours(dateString: string): boolean {
+// Check if a publication date is within the last 48 hours
+function isWithinLast48Hours(dateString: string): boolean {
   try {
     const pubDate = new Date(dateString);
     const now = new Date();
     const hoursDifference = (now.getTime() - pubDate.getTime()) / (1000 * 60 * 60);
-    return hoursDifference <= 36;
+    return hoursDifference <= 48;
   } catch (error) {
     console.error(`Error parsing date: ${dateString}`, error);
     return false; // If we can't parse the date, exclude the article
@@ -132,7 +187,7 @@ export default {
 
     const allArticles: Article[] = [];
     for (const source of sources) {
-      const articles = await fetchAndParseRSS(source.url, source.name);
+      const articles = await fetchAndParseFeed(source.url, source.name);
       allArticles.push(...articles);
     }
 
