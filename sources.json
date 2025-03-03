@@ -29,10 +29,6 @@
       "url": "https://asahilinux.org/blog/index.xml"
     },
     {
-      "title": "Astro blog",
-      "url": "https://astro.build/rss.xml"
-    },
-    {
       "title": "Bear Cub commits",
       "url": "https://github.com/clente/hugo-bearcub/commits/main.atom"
     },
@@ -87,10 +83,6 @@
     {
       "title": "DuckDuckGo blog",
       "url": "https://spreadprivacy.com/rss/"
-    },
-    {
-      "title": "ElcomSoft blog",
-      "url": "https://blog.elcomsoft.com/feed/"
     },
     {
       "title": "Element blog",
