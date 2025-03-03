@@ -52,7 +52,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
     }
 
     const articles: Article[] = [];
-    
+
     // Check if this is an RSS feed (has <item> elements)
     const rssItems = xmlDoc.getElementsByTagName("item");
     if (rssItems.length > 0) {
@@ -62,7 +62,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
         const link = item.getElementsByTagName("link")[0]?.textContent || "";
         const description = item.getElementsByTagName("description")[0]?.textContent || "";
         const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
-        
+
         if (link && title && pubDate) {
           // Only include articles from the last 48 hours
           if (isWithinLast48Hours(pubDate)) {
@@ -84,11 +84,11 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
         // Process as ATOM feed
         for (const entry of Array.from(atomEntries)) {
           const title = entry.getElementsByTagName("title")[0]?.textContent || "";
-          
+
           // In ATOM, find the appropriate link (prefer alternate)
           let link = "";
           const linkElements = entry.getElementsByTagName("link");
-          
+
           // First try to find link with rel="alternate"
           for (const linkElement of Array.from(linkElements)) {
             const rel = linkElement.getAttribute("rel");
@@ -97,22 +97,22 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
               break;
             }
           }
-          
+
           // If no alternate link found, use the first link
           if (!link && linkElements[0]) {
             link = linkElements[0].getAttribute("href") || "";
           }
-          
+
           // Content could be in content or summary elements
           const content = entry.getElementsByTagName("content")[0]?.textContent || "";
           const summary = entry.getElementsByTagName("summary")[0]?.textContent || "";
           const description = content || summary;
-          
+
           // ATOM uses <published> or <updated> instead of pubDate
           const published = entry.getElementsByTagName("published")[0]?.textContent || "";
           const updated = entry.getElementsByTagName("updated")[0]?.textContent || "";
           const pubDate = published || updated;
-          
+
           if (link && title && pubDate) {
             // Only include articles from the last 48 hours
             if (isWithinLast48Hours(pubDate)) {
