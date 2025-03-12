@@ -8,6 +8,7 @@ interface Article {
   title: string;
   snippet: string;
   source: string;
+  sourceUrl: string;
   publicationDatetime: string;
 }
 
@@ -72,6 +73,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
               title,
               snippet: description,
               source: sourceName,
+              sourceUrl: url,
               publicationDatetime: pubDate,
             });
           }
@@ -122,6 +124,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
                 title,
                 snippet: description,
                 source: sourceName,
+                sourceUrl: url,
                 publicationDatetime: pubDate,
               });
             }
