@@ -8,17 +8,21 @@
 	"main": "src/index.ts",
 	"compatibility_date": "2025-02-24",
 	"observability": {
-		"enabled": true
+		"enabled": true,
 	},
 	"kv_namespaces": [
 		{
 			"binding": "ARTICLES",
-			"id": "f960d237581b41d2980372ab30b3e92e"
-		}
+			"id": "f960d237581b41d2980372ab30b3e92e",
+		},
+	],
+	"routes": [
+		{
+			"pattern": "updates.news.ldmitch.dev",
+			"custom_domain": true,
+		},
 	],
 	"triggers": {
-		"crons": [
-			"*/30 * * * *"
-		]
-	}
+		"crons": ["*/30 * * * *"],
+	},
 }
