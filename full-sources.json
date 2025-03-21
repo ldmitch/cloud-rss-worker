@@ -1,0 +1,300 @@
+{
+  "sources": [
+    {
+      "title": "AdGuard blog",
+      "url": "https://adguard.com/blog/rss-en.xml"
+    },
+    {
+      "title": "AdGuard DNS blog",
+      "url": "https://adguard-dns.io/blog/rss-en.xml"
+    },
+    {
+      "title": "AlternativeTo news",
+      "url": "https://feed.alternativeto.net/news/all/"
+    },
+    {
+      "title": "Anthropic status",
+      "url": "https://status.anthropic.com/history.atom"
+    },
+    {
+      "title": "Apple Developer news",
+      "url": "https://developer.apple.com/news/rss/news.rss"
+    },
+    {
+      "title": "Apple software releases",
+      "url": "https://developer.apple.com/news/releases/rss/releases.rss"
+    },
+    {
+      "title": "Asahi Linux updates",
+      "url": "https://asahilinux.org/blog/index.xml"
+    },
+    {
+      "title": "Bear Cub commits",
+      "url": "https://github.com/clente/hugo-bearcub/commits/main.atom"
+    },
+    {
+      "title": "Bitdefender Labs",
+      "url": "https://www.bitdefender.com/blog/api/rss/labs/"
+    },
+    {
+      "title": "Bitwarden blog",
+      "url": "https://bitwarden.com/blog/feed.xml"
+    },
+    {
+      "title": "Bradley Taunt's blog",
+      "url": "https://btxx.org/index.rss"
+    },
+    {
+      "title": "Brave blog",
+      "url": "https://brave.com/blog/index.xml"
+    },
+    {
+      "title": "Cake Wallet blog",
+      "url": "https://blog.cakewallet.com/rss"
+    },
+    {
+      "title": "Chromium blog",
+      "url": "https://blog.chromium.org/atom.xml"
+    },
+    {
+      "title": "Citizen Lab news",
+      "url": "https://citizenlab.ca/feed"
+    },
+    {
+      "title": "Cloudflare blog",
+      "url": "https://blog.cloudflare.com/rss"
+    },
+    {
+      "title": "Cryptomator blog",
+      "url": "https://cryptomator.org/feed.xml"
+    },
+    {
+      "title": "Daily Developer Tips",
+      "url": "https://gomakethings.com/feed/index.xml"
+    },
+    {
+      "title": "Darek Kay's blog",
+      "url": "https://darekkay.com/atom.xml"
+    },
+    {
+      "title": "DistroWatch",
+      "url": "https://distrowatch.com/news/dw.xml"
+    },
+    {
+      "title": "DuckDuckGo blog",
+      "url": "https://spreadprivacy.com/rss/"
+    },
+    {
+      "title": "Element blog",
+      "url": "https://element.io/blog/rss/"
+    },
+    {
+      "title": "Ente blog",
+      "url": "https://ente.io/blog/rss.xml"
+    },
+    {
+      "title": "EPIC updates",
+      "url": "https://epic.org/search/feed/rss2/"
+    },
+    {
+      "title": "Firefox Nightly blog",
+      "url": "https://blog.nightly.mozilla.org/feed"
+    },
+    {
+      "title": "FoodNoms blog",
+      "url": "https://www.foodnoms.com/blog/feed/rss.xml"
+    },
+    {
+      "title": "Google Security blog",
+      "url": "https://security.googleblog.com/feeds/posts/default"
+    },
+    {
+      "title": "GrapheneOS changelog",
+      "url": "https://grapheneos.org/releases.atom"
+    },
+    {
+      "title": "Have I Been Pwned breaches",
+      "url": "https://feeds.feedburner.com/HaveIBeenPwnedLatestBreaches"
+    },
+    {
+      "title": "Homebrew blog",
+      "url": "https://brew.sh/atom.xml"
+    },
+    {
+      "title": "Hugo news",
+      "url": "https://gohugo.io/news/index.xml"
+    },
+    {
+      "title": "iVPN blog",
+      "url": "https://www.ivpn.net/blog/index.xml"
+    },
+    {
+      "title": "Jeff Johnson's blog",
+      "url": "https://lapcatsoftware.com/articles/atom.xml"
+    },
+    {
+      "title": "Kagi blog",
+      "url": "https://blog.kagi.com/rss.xml"
+    },
+    {
+      "title": "Krebs on Security",
+      "url": "https://krebsonsecurity.com/feed/"
+    },
+    {
+      "title": "Liam Mitchell's blog",
+      "url": "https://ldmitch.dev/index.xml"
+    },
+    {
+      "title": "LocalSend releases",
+      "url": "https://github.com/localsend/localsend/releases.atom"
+    },
+    {
+      "title": "LuLu releases",
+      "url": "https://github.com/objective-see/LuLu/releases.atom"
+    },
+    {
+      "title": "LWN",
+      "url": "https://lwn.net/headlines/rss"
+    },
+    {
+      "title": "Malwarebytes Labs",
+      "url": "https://blog.malwarebytes.com/feed/"
+    },
+    {
+      "title": "Marginalia blog",
+      "url": "https://www.marginalia.nu/index.xml"
+    },
+    {
+      "title": "Matrix blog",
+      "url": "https://matrix.org/blog/feed"
+    },
+    {
+      "title": "MDN blog",
+      "url": "https://developer.mozilla.org/en-US/blog/rss.xml"
+    },
+    {
+      "title": "Microsoft Browser Vulnerability Research",
+      "url": "https://microsoftedge.github.io/edgevr/feed.xml"
+    },
+    {
+      "title": "Microsoft Edge blog",
+      "url": "https://blogs.windows.com/msedgedev/feed"
+    },
+    {
+      "title": "Mozilla blog",
+      "url": "https://blog.mozilla.org/feed"
+    },
+    {
+      "title": "Mozilla Hacks",
+      "url": "https://hacks.mozilla.org/feed"
+    },
+    {
+      "title": "Mullvad blog",
+      "url": "https://mullvad.net/en/blog/feed/atom/"
+    },
+    {
+      "title": "NetNewsWire news",
+      "url": "https://nnw.ranchero.com/feed.xml"
+    },
+    {
+      "title": "OpenAI status",
+      "url": "https://status.openai.com/history.atom"
+    },
+    {
+      "title": "Orion release notes",
+      "url": "https://orionfeedback.org/atom/t/release-notes"
+    },
+    {
+      "title": "Paranoid Penguin",
+      "url": "https://blog.paranoidpenguin.net/index.xml"
+    },
+    {
+      "title": "PrivacyGuides blog",
+      "url": "https://blog.privacyguides.org/rss"
+    },
+    {
+      "title": "PrivacyGuides.org changelog",
+      "url": "https://github.com/privacyguides/privacyguides.org/releases.atom"
+    },
+    {
+      "title": "PrivSec posts",
+      "url": "https://privsec.dev/index.xml"
+    },
+    {
+      "title": "Proton blog",
+      "url": "https://proton.me/blog/feed"
+    },
+    {
+      "title": "ProtonVPN blog",
+      "url": "https://protonvpn.com/blog/feed/"
+    },
+    {
+      "title": "React Native blog",
+      "url": "https://reactnative.dev/blog/rss.xml"
+    },
+    {
+      "title": "React release notes",
+      "url": "https://github.com/facebook/react/releases.atom"
+    },
+    {
+      "title": "Safing blog",
+      "url": "http://safing.io/blog.xml"
+    },
+    {
+      "title": "Schneier on Security",
+      "url": "https://www.schneier.com/feed/atom/"
+    },
+    {
+      "title": "Session blog",
+      "url": "https://getsession.org/feed"
+    },
+    {
+      "title": "Signal blog",
+      "url": "http://signal.org/blog/rss.xml"
+    },
+    {
+      "title": "Simon Willison's blog",
+      "url": "https://simonwillison.net/atom/everything/"
+    },
+    {
+      "title": "SimpleX blog",
+      "url": "https://simplex.chat/feed.rss"
+    },
+    {
+      "title": "Stack Diary",
+      "url": "https://stackdiary.com/feed/"
+    },
+    {
+      "title": "Stoutner's blog",
+      "url": "https://www.stoutner.com/feed/"
+    },
+    {
+      "title": "Svelte blog",
+      "url": "https://svelte.dev/blog/rss.xml"
+    },
+    {
+      "title": "Tailscale blog",
+      "url": "https://tailscale.com/blog/index.xml"
+    },
+    {
+      "title": "Tor Project blog",
+      "url": "https://blog.torproject.org/feed.xml"
+    },
+    {
+      "title": "Vercel blog",
+      "url": "https://vercel.com/atom"
+    },
+    {
+      "title": "VS Code blog",
+      "url": "https://code.visualstudio.com/feed.xml"
+    },
+    {
+      "title": "Wipr blog",
+      "url": "https://kaylees.site/feed.xml"
+    },
+    {
+      "title": "Zed blog",
+      "url": "https://zed.dev/blog.rss"
+    }
+  ]
+}
