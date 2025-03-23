@@ -41,10 +41,6 @@
 			"url": "https://blog.cloudflare.com/rss"
 		},
 		{
-			"title": "Distrowatch",
-			"url": "https://distrowatch.com/news/dw.xml"
-		},
-		{
 			"title": "Google Security",
 			"url": "https://security.googleblog.com/feeds/posts/default"
 		},
