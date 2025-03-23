@@ -1,55 +1,75 @@
 {
 	"sources": [
 		{
-			"title": "AlternativeTo news",
+			"title": "AdGuard",
+			"url": "https://adguard.com/blog/rss-en.xml"
+		},
+		{
+			"title": "AlternativeTo",
 			"url": "https://feed.alternativeto.net/news/all/"
+		},
+		{
+			"title": "Apple",
+			"url": "https://developer.apple.com/news/releases/rss/releases.rss"
+		},
+		{
+			"title": "Ars Technica",
+			"url": "https://feeds.arstechnica.com/arstechnica/index"
 		},
 		{
 			"title": "Bitdefender Labs",
 			"url": "https://www.bitdefender.com/blog/api/rss/labs/"
 		},
 		{
-			"title": "Bitwarden blog",
-			"url": "https://bitwarden.com/blog/feed.xml"
-		},
-		{
-			"title": "Bradley Taunt's blog",
+			"title": "Bradley Taunt",
 			"url": "https://btxx.org/index.rss"
 		},
 		{
-			"title": "Brave blog",
+			"title": "Brave",
 			"url": "https://brave.com/blog/index.xml"
 		},
 		{
-			"title": "Chromium blog",
+			"title": "Chromium",
 			"url": "https://blog.chromium.org/atom.xml"
 		},
 		{
-			"title": "Citizen Lab news",
+			"title": "Citizen Lab",
 			"url": "https://citizenlab.ca/feed"
 		},
 		{
-			"title": "Cloudflare blog",
+			"title": "Cloudflare",
 			"url": "https://blog.cloudflare.com/rss"
 		},
 		{
-			"title": "DuckDuckGo blog",
-			"url": "https://spreadprivacy.com/rss/"
+			"title": "Distrowatch",
+			"url": "https://distrowatch.com/news/dw.xml"
 		},
 		{
-			"title": "Google Security blog",
+			"title": "Google Security",
 			"url": "https://security.googleblog.com/feeds/posts/default"
 		},
 		{
-			"title": "GrapheneOS changelog",
+			"title": "GrapheneOS",
 			"url": "https://grapheneos.org/releases.atom"
+		},
+		{
+			"title": "Hacker News",
+			"url": "https://hnrss.org/frontpage"
+		},
+		{
+			"title": "Homebrew",
+			"url": "https://brew.sh/atom.xml"
+		},
+		{
+			"title": "Kagi",
+			"url": "https://blog.kagi.com/rss.xml"
 		},
 		{
 			"title": "Krebs on Security",
 			"url": "https://krebsonsecurity.com/feed/"
 		},
 		{
-			"title": "Liam Mitchell's blog",
+			"title": "Liam Mitchell",
 			"url": "https://ldmitch.dev/index.xml"
 		},
 		{
@@ -57,63 +77,55 @@
 			"url": "https://lwn.net/headlines/rss"
 		},
 		{
+			"title": "MacRumors",
+			"url": "https://feeds.macrumors.com/MacRumors-All"
+		},
+		{
 			"title": "Malwarebytes Labs",
 			"url": "https://blog.malwarebytes.com/feed/"
 		},
 		{
-			"title": "MDN blog",
-			"url": "https://developer.mozilla.org/en-US/blog/rss.xml"
-		},
-		{
-			"title": "Mozilla blog",
-			"url": "https://blog.mozilla.org/feed"
-		},
-		{
-			"title": "Mozilla Hacks",
-			"url": "https://hacks.mozilla.org/feed"
-		},
-		{
-			"title": "Mullvad blog",
+			"title": "Mullvad",
 			"url": "https://mullvad.net/en/blog/feed/atom/"
 		},
 		{
-			"title": "OpenAI status",
-			"url": "https://status.openai.com/history.atom"
-		},
-		{
-			"title": "PrivacyGuides blog",
+			"title": "PrivacyGuides (posts)",
 			"url": "https://blog.privacyguides.org/rss"
 		},
 		{
-			"title": "PrivacyGuides.org changelog",
+			"title": "PrivacyGuides.org (changelog)",
 			"url": "https://github.com/privacyguides/privacyguides.org/releases.atom"
 		},
 		{
-			"title": "Proton blog",
-			"url": "https://proton.me/blog/feed"
+			"title": "PrivSec",
+			"url": "https://privsec.dev/index.xml"
 		},
 		{
-			"title": "ProtonVPN blog",
-			"url": "https://protonvpn.com/blog/feed/"
+			"title": "Proton",
+			"url": "https://proton.me/blog/feed"
 		},
 		{
 			"title": "Schneier on Security",
 			"url": "https://www.schneier.com/feed/atom/"
 		},
 		{
-			"title": "Simon Willison's blog",
+			"title": "Simon Willison",
 			"url": "https://simonwillison.net/atom/everything/"
 		},
 		{
-			"title": "Vercel blog",
-			"url": "https://vercel.com/atom"
+			"title": "Techmeme",
+			"url": "https://simonwillison.net/atom/everything/"
 		},
 		{
-			"title": "VS Code blog",
+			"title": "VS Code",
 			"url": "https://code.visualstudio.com/feed.xml"
 		},
 		{
-			"title": "Zed blog",
+			"title": "Wipr",
+			"url": "https://kaylees.site/feed.xml"
+		},
+		{
+			"title": "Zed.dev",
 			"url": "https://zed.dev/blog.rss"
 		}
 	]
