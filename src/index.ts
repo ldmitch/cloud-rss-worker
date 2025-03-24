@@ -78,23 +78,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 				// Get title and strip CDATA if present
 				const titleText = item.getElementsByTagName("title")[0]?.textContent || "";
 				const title = stripCDATA(titleText);
-
-				// Determine which URL to use based on the source
-				let link = "";
-				if (sourceName === "Hacker News") {
-					// For HN, prefer the guid (which contains the discussion URL)
-					const guidElement = item.getElementsByTagName("guid")[0];
-					if (guidElement && guidElement.textContent) {
-						link = guidElement.textContent.trim();
-					} else {
-						// Fall back to link if guid is not available
-						link = item.getElementsByTagName("link")[0]?.textContent || "";
-					}
-				} else {
-					// For all other sources, use the link as before
-					link = item.getElementsByTagName("link")[0]?.textContent || "";
-				}
-
+				const link = item.getElementsByTagName("link")[0]?.textContent || "";
 				const descriptionText = item.getElementsByTagName("description")[0]?.textContent || "";
 				const description = stripCDATA(descriptionText);
 				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
@@ -112,6 +96,8 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 							publicationDatetime: pubDate,
 						});
 					}
+				} else {
+					console.log(`Skipping article with missing fields: ${title} (${url})`);
 				}
 			}
 		} else {
@@ -167,6 +153,8 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 								publicationDatetime: pubDate,
 							});
 						}
+					} else {
+						console.log(`Skipping article with missing fields: ${title} (${url})`);
 					}
 				}
 			}
