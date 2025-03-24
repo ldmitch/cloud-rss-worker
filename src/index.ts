@@ -38,6 +38,40 @@ function stripCDATA(content: string): string {
 	);
 }
 
+// Helper: Decode HTML entities to their corresponding characters
+function decodeHtmlEntities(text: string): string {
+	if (!text) return "";
+
+	// Create a mapping of common HTML entities
+	const entities: { [key: string]: string } = {
+		"&amp;": "&",
+		"&lt;": "<",
+		"&gt;": ">",
+		"&quot;": '\"',
+		"&apos;": "'",
+		"&nbsp;": " ",
+		"&ndash;": "–",
+		"&mdash;": "—",
+		"&lsquo;": "'",
+		"&rsquo;": "'",
+		"&sbquo;": "‚",
+		"&ldquo;": '"',
+		"&rdquo;": '"',
+		"&bdquo;": "„",
+	};
+
+	// Replace named entities
+	let result = text;
+	Object.keys(entities).forEach((entity) => {
+		result = result.replace(new RegExp(entity, "g"), entities[entity]);
+	});
+
+	// Replace numeric entities (decimal and hexadecimal)
+	return result
+		.replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(dec))
+		.replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
+}
+
 // Simple hash function to convert URLs to alphanumeric IDs
 function hashUrl(url: string): string {
 	let hash = 0;
@@ -77,10 +111,10 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 			for (const item of Array.from(rssItems)) {
 				// Get title and strip CDATA if present
 				const titleText = item.getElementsByTagName("title")[0]?.textContent || "";
-				const title = stripCDATA(titleText);
+				const title = decodeHtmlEntities(stripCDATA(titleText));
 				const link = item.getElementsByTagName("link")[0]?.textContent || "";
 				const descriptionText = item.getElementsByTagName("description")[0]?.textContent || "";
-				const description = stripCDATA(descriptionText);
+				const description = decodeHtmlEntities(stripCDATA(descriptionText));
 				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
 
 				if (link && title && pubDate) {
@@ -108,7 +142,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 				for (const entry of Array.from(atomEntries)) {
 					// Get title and strip CDATA if present
 					const titleText = entry.getElementsByTagName("title")[0]?.textContent || "";
-					const title = stripCDATA(titleText);
+					const title = decodeHtmlEntities(stripCDATA(titleText));
 
 					// In ATOM, find the appropriate link (prefer alternate)
 					let link = "";
@@ -130,9 +164,9 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 
 					// Content could be in content or summary elements
 					const contentText = entry.getElementsByTagName("content")[0]?.textContent || "";
-					const content = stripCDATA(contentText);
+					const content = decodeHtmlEntities(stripCDATA(contentText));
 					const summaryText = entry.getElementsByTagName("summary")[0]?.textContent || "";
-					const summary = stripCDATA(summaryText);
+					const summary = decodeHtmlEntities(stripCDATA(summaryText));
 					const description = content || summary;
 
 					// ATOM uses <published> or <updated> instead of pubDate
