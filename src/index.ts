@@ -22,6 +22,22 @@ const sources = sourcesData.sources.map((source: Source) => ({
 	url: source.url,
 }));
 
+// Helper: Strip CDATA wrappers from a string
+function stripCDATA(content: string): string {
+	// Remove any opening "<![CDATA[" or "[CDATA[" and the corresponding closing "]]>" or "]]"
+	// capturing the inside as group $1 and returning it (so you keep just the inside).
+	// The 's' (dotAll) flag ensures the dot also matches newlines.
+	// The 'g' flag removes ALL occurrences in one pass.
+	return (
+		content
+			.replace(/<!?\[CDATA\[(.*?)\]\]>/gs, "$1")
+			// In case there are partial leftovers like “[CDATA[” without the closing,
+			// or the parser returned them without exclamation mark:
+			.replace(/\[CDATA\[/g, "")
+			.replace(/\]\]/g, "")
+	);
+}
+
 // Simple hash function to convert URLs to alphanumeric IDs
 function hashUrl(url: string): string {
 	let hash = 0;
@@ -59,7 +75,9 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 		if (rssItems.length > 0) {
 			// Process as RSS feed
 			for (const item of Array.from(rssItems)) {
-				const title = item.getElementsByTagName("title")[0]?.textContent || "";
+				// Get title and strip CDATA if present
+				const titleText = item.getElementsByTagName("title")[0]?.textContent || "";
+				const title = stripCDATA(titleText);
 
 				// Determine which URL to use based on the source
 				let link = "";
@@ -77,7 +95,8 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 					link = item.getElementsByTagName("link")[0]?.textContent || "";
 				}
 
-				const description = item.getElementsByTagName("description")[0]?.textContent || "";
+				const descriptionText = item.getElementsByTagName("description")[0]?.textContent || "";
+				const description = stripCDATA(descriptionText);
 				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
 
 				if (link && title && pubDate) {
@@ -101,7 +120,9 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 			if (atomEntries.length > 0) {
 				// Process as ATOM feed
 				for (const entry of Array.from(atomEntries)) {
-					const title = entry.getElementsByTagName("title")[0]?.textContent || "";
+					// Get title and strip CDATA if present
+					const titleText = entry.getElementsByTagName("title")[0]?.textContent || "";
+					const title = stripCDATA(titleText);
 
 					// In ATOM, find the appropriate link (prefer alternate)
 					let link = "";
@@ -122,8 +143,10 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 					}
 
 					// Content could be in content or summary elements
-					const content = entry.getElementsByTagName("content")[0]?.textContent || "";
-					const summary = entry.getElementsByTagName("summary")[0]?.textContent || "";
+					const contentText = entry.getElementsByTagName("content")[0]?.textContent || "";
+					const content = stripCDATA(contentText);
+					const summaryText = entry.getElementsByTagName("summary")[0]?.textContent || "";
+					const summary = stripCDATA(summaryText);
 					const description = content || summary;
 
 					// ATOM uses <published> or <updated> instead of pubDate
