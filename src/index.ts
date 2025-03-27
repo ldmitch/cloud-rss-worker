@@ -1,4 +1,3 @@
-import type { ScheduledController } from "@cloudflare/workers-types";
 import { DOMParser } from "@xmldom/xmldom";
 import sourcesData from "../sources.json";
 
