@@ -14,7 +14,7 @@
 		/* Specify how TypeScript looks up a file from a given module specifier. */
 		"moduleResolution": "Bundler",
 
-		"types": ["worker-configuration.d.ts"],
+		"types": ["./worker-configuration.d.ts"],
 		/* Enable importing .json files */
 		"resolveJsonModule": true,
 
