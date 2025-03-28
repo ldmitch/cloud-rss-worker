@@ -79,6 +79,50 @@ function hashUrl(url: string): string {
 	return Math.abs(hash).toString(36);
 }
 
+// Helper: Allow multiple attempts at putting a value to KV with exponential backoff
+async function putWithRetries(
+	kvNamespace: KVNamespace,
+	key: string,
+	value: string | ArrayBuffer | ReadableStream,
+	maxRetries: number = 3,
+	initialDelayMs: number = 200,
+	metadata?: unknown,
+	expirationTtl?: number,
+): Promise<void> {
+	let attempts = 0;
+	let delay = initialDelayMs;
+
+	while (attempts <= maxRetries) {
+		try {
+			const options: KVNamespacePutOptions = {};
+			if (metadata !== undefined) {
+				options.metadata = metadata;
+			}
+			if (expirationTtl !== undefined) {
+				options.expirationTtl = expirationTtl;
+			}
+
+			await kvNamespace.put(key, value, options);
+
+			if (attempts > 0) {
+				console.log(`KV put successful for key '${key}' after ${attempts} retries.`);
+			}
+			return;
+		} catch (error) {
+			attempts++;
+			if (attempts > maxRetries) {
+				console.error(`KV put failed for key '${key}' after ${maxRetries} retries. Giving up. Last error:`, error);
+				throw error;
+			}
+
+			console.warn(`KV put failed for key '${key}' (attempt ${attempts}/${maxRetries}). Retrying in ${delay}ms... Error:`, error);
+
+			await new Promise((resolve) => setTimeout(resolve, delay));
+			delay *= 2;
+		}
+	}
+}
+
 // Function: Fetch and parse RSS/ATOM feeds
 async function fetchAndParseFeed(url: string, sourceName: string): Promise<Article[]> {
 	try {
@@ -233,7 +277,6 @@ export default {
 
 		const fetchPromises = sources.map((source) =>
 			fetchAndParseFeed(source.url, source.name).catch((error) => {
-				// Add individual catch here if you want to log per-source failures distinctly from within fetchAndParseFeed
 				console.error(`Scheduled task: Error processing <span class="math-inline">\{source\.name\} \(</span>{source.url})`, error);
 				return [] as Article[]; // Ensure failed promises resolve to an empty array
 			}),
@@ -243,16 +286,37 @@ export default {
 		const allArticles = results.flat(); // Flatten the array of arrays
 
 		allArticles.sort((a, b) => {
-			const dateA = new Date(a.publicationDatetime).getTime();
-			const dateB = new Date(b.publicationDatetime).getTime();
-			return dateB - dateA;
+			try {
+				const dateA = new Date(a.publicationDatetime).getTime();
+				const dateB = new Date(b.publicationDatetime).getTime();
+
+				if (isNaN(dateA) && isNaN(dateB)) return 0;
+				if (isNaN(dateA)) return 1; // Put items with invalid dates last
+				if (isNaN(dateB)) return -1;
+				return dateB - dateA; // Descending order
+			} catch (e) {
+				console.error(`Error parsing dates during sort: ${a.publicationDatetime}, ${b.publicationDatetime}`, e);
+				return 0; // Keep original order if dates are problematic
+			}
 		});
 
-		await Promise.all([
-			env.ARTICLES.put("all_articles", JSON.stringify(allArticles)),
-			env.ARTICLES.put("last_update", Math.floor(Date.now() / 1000).toString()),
-		]);
+		const articlesJson = JSON.stringify(allArticles);
+		const currentTimestamp = Math.floor(Date.now() / 1000).toString();
 
-		console.log(`Successfully refreshed ${allArticles.length} articles at ${new Date().toISOString()}`);
+		try {
+			// Use putWithRetries for KV writes
+			console.log(`Attempting to write ${allArticles.length} articles to KV...`);
+			await putWithRetries(env.ARTICLES, "all_articles", articlesJson);
+
+			console.log(`Attempting to write last_update timestamp (${currentTimestamp}) to KV...`);
+			await putWithRetries(env.ARTICLES, "last_update", currentTimestamp);
+
+			// Log final success only if both puts succeed after retries
+			console.log(`Successfully refreshed ${allArticles.length} articles and updated timestamp at ${new Date().toISOString()}`);
+		} catch (error) {
+			// This catch block executes if putWithRetries ultimately fails after all attempts
+			console.error("Scheduled task failed: Could not write to KV after multiple retries.", error);
+			throw error;
+		}
 	},
 } satisfies ExportedHandler<Env>;
