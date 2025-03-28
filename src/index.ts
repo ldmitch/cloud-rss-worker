@@ -230,11 +230,16 @@ export default {
 	async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
 		console.log("Running scheduled refresh of articles");
 
-		const allArticles: Article[] = [];
-		for (const source of sources) {
-			const articles = await fetchAndParseFeed(source.url, source.name);
-			allArticles.push(...articles);
-		}
+		const fetchPromises = sources.map((source) =>
+			fetchAndParseFeed(source.url, source.name).catch((error) => {
+				// Add individual catch here if you want to log per-source failures distinctly from within fetchAndParseFeed
+				console.error(`Scheduled task: Error processing <span class="math-inline">\{source\.name\} \(</span>{source.url})`, error);
+				return [] as Article[]; // Ensure failed promises resolve to an empty array
+			}),
+		);
+
+		const results = await Promise.all(fetchPromises);
+		const allArticles = results.flat(); // Flatten the array of arrays
 
 		allArticles.sort((a, b) => {
 			const dateA = new Date(a.publicationDatetime).getTime();
@@ -242,9 +247,10 @@ export default {
 			return dateB - dateA;
 		});
 
-		await env.ARTICLES.put("all_articles", JSON.stringify(allArticles));
-		const currentTimestamp = Math.floor(Date.now() / 1000).toString(); // Unix timestamp in seconds
-		await env.ARTICLES.put("last_update", currentTimestamp);
+		await Promise.all([
+			env.ARTICLES.put("all_articles", JSON.stringify(allArticles)),
+			env.ARTICLES.put("last_update", Math.floor(Date.now() / 1000).toString()),
+		]);
 
 		console.log(`Successfully refreshed ${allArticles.length} articles at ${new Date().toISOString()}`);
 	},
