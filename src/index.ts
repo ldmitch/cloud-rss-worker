@@ -24,9 +24,6 @@ const sources = sourcesData.sources.map((source: Source) => ({
 // Helper: Strip CDATA wrappers from a string
 function stripCDATA(content: string): string {
 	// Remove any opening "<![CDATA[" or "[CDATA[" and the corresponding closing "]]>" or "]]"
-	// capturing the inside as group $1 and returning it (so you keep just the inside).
-	// The 's' (dotAll) flag ensures the dot also matches newlines.
-	// The 'g' flag removes ALL occurrences in one pass.
 	return (
 		content
 			.replace(/<!?\[CDATA\[(.*?)\]\]>/gs, "$1")
@@ -41,7 +38,6 @@ function stripCDATA(content: string): string {
 function decodeHtmlEntities(text: string): string {
 	if (!text) return "";
 
-	// Create a mapping of common HTML entities
 	const entities: { [key: string]: string } = {
 		"&amp;": "&",
 		"&lt;": "<",
@@ -71,7 +67,7 @@ function decodeHtmlEntities(text: string): string {
 		.replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCharCode(parseInt(hex, 16)));
 }
 
-// Simple hash function to convert URLs to alphanumeric IDs
+// Helper: Convert URLs to alphanumeric IDs
 function hashUrl(url: string): string {
 	let hash = 0;
 	for (let i = 0; i < url.length; i++) {
@@ -83,7 +79,7 @@ function hashUrl(url: string): string {
 	return Math.abs(hash).toString(36);
 }
 
-// Function to fetch and parse RSS/ATOM feeds
+// Function: Fetch and parse RSS/ATOM feeds
 async function fetchAndParseFeed(url: string, sourceName: string): Promise<Article[]> {
 	try {
 		const response = await fetch(url);
@@ -95,7 +91,6 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 		const parser = new DOMParser();
 		const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
-		// Check for parsing errors
 		const parserError = xmlDoc.getElementsByTagName("parsererror")[0];
 		if (parserError) {
 			throw new Error(`Failed to parse XML for ${url}: ${parserError.textContent}`);
@@ -106,9 +101,8 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 		// Check if this is an RSS feed (has <item> elements)
 		const rssItems = xmlDoc.getElementsByTagName("item");
 		if (rssItems.length > 0) {
-			// Process as RSS feed
 			for (const item of Array.from(rssItems)) {
-				// Get title and strip CDATA if present
+				// Get data and strip CDATA if present
 				const titleText = item.getElementsByTagName("title")[0]?.textContent || "";
 				const title = decodeHtmlEntities(stripCDATA(titleText));
 				const link = item.getElementsByTagName("link")[0]?.textContent || "";
@@ -117,7 +111,6 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
 
 				if (link && title && pubDate) {
-					// Only include articles from the last 48 hours
 					if (isWithinLast48Hours(pubDate)) {
 						articles.push({
 							id: hashUrl(link),
@@ -137,7 +130,6 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 			// Check if this is an ATOM feed (has <entry> elements)
 			const atomEntries = xmlDoc.getElementsByTagName("entry");
 			if (atomEntries.length > 0) {
-				// Process as ATOM feed
 				for (const entry of Array.from(atomEntries)) {
 					// Get title and strip CDATA if present
 					const titleText = entry.getElementsByTagName("title")[0]?.textContent || "";
@@ -168,13 +160,11 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 					const summary = decodeHtmlEntities(stripCDATA(summaryText));
 					const description = content || summary;
 
-					// ATOM uses <published> or <updated> instead of pubDate
 					const published = entry.getElementsByTagName("published")[0]?.textContent || "";
 					const updated = entry.getElementsByTagName("updated")[0]?.textContent || "";
 					const pubDate = published || updated;
 
 					if (link && title && pubDate) {
-						// Only include articles from the last 48 hours
 						if (isWithinLast48Hours(pubDate)) {
 							articles.push({
 								id: hashUrl(link),
@@ -200,7 +190,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 	}
 }
 
-// Check if a publication date is within the last 48 hours
+// Helper: Check if a publication date is within the last 48 hours
 function isWithinLast48Hours(dateString: string): boolean {
 	try {
 		const pubDate = new Date(dateString);
@@ -209,14 +199,12 @@ function isWithinLast48Hours(dateString: string): boolean {
 		return hoursDifference <= 48;
 	} catch (error) {
 		console.error(`Error parsing date: ${dateString}`, error);
-		return false; // If we can't parse the date, exclude the article
+		return false;
 	}
 }
 
 export default {
-	// HTTP request handler
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-		// Get articles from KV
 		try {
 			const articlesString = await env.ARTICLES.get("all_articles");
 
@@ -239,7 +227,6 @@ export default {
 		}
 	},
 
-	// Scheduled function handler
 	async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
 		console.log("Running scheduled refresh of articles");
 
@@ -249,17 +236,13 @@ export default {
 			allArticles.push(...articles);
 		}
 
-		// Sort articles by publication date (newest first)
 		allArticles.sort((a, b) => {
 			const dateA = new Date(a.publicationDatetime).getTime();
 			const dateB = new Date(b.publicationDatetime).getTime();
 			return dateB - dateA;
 		});
 
-		// Store articles in KV
 		await env.ARTICLES.put("all_articles", JSON.stringify(allArticles));
-
-		// Store last update timestamp in KV
 		const currentTimestamp = Math.floor(Date.now() / 1000).toString(); // Unix timestamp in seconds
 		await env.ARTICLES.put("last_update", currentTimestamp);
 
