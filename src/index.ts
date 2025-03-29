@@ -154,12 +154,12 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 				const description = decodeHtmlEntities(stripCDATA(descriptionText));
 				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
 
-				if (link && title && pubDate) {
+				if (link && pubDate) {
 					if (isWithinLast48Hours(pubDate)) {
 						articles.push({
 							id: hashUrl(link),
 							url: link,
-							title,
+							title: title || sourceName,
 							snippet: description,
 							source: sourceName,
 							sourceUrl: url,

@@ -9,6 +9,10 @@
 			"url": "https://feed.alternativeto.net/news/all/"
 		},
 		{
+			"title": "Andrej Karpathy",
+			"url": "https://karpathy.bearblog.dev/feed/"
+		},
+		{
 			"title": "Apple",
 			"url": "https://developer.apple.com/news/releases/rss/releases.rss"
 		},
@@ -19,6 +23,42 @@
 		{
 			"title": "Bitdefender Labs",
 			"url": "https://www.bitdefender.com/blog/api/rss/labs/"
+		},
+		{
+			"title": "BowTiedBull",
+			"url": "https://bowtiedbull.io/feed"
+		},
+		{
+			"title": "BowTiedF'er",
+			"url": "https://effsigive.substack.com/feed"
+		},
+		{
+			"title": "BowTiedFox",
+			"url": "https://www.bowtiedfox.com/feed"
+		},
+		{
+			"title": "BowTiedGerman",
+			"url": "https://turbofashion.substack.com/feed"
+		},
+		{
+			"title": "BowTiedMara",
+			"url": "https://www.wifiagency.io/feed"
+		},
+		{
+			"title": "BowTiedOpossum",
+			"url": "https://newsletter.bowtiedopossum.com/feed"
+		},
+		{
+			"title": "BowTiedOx",
+			"url": "https://www.bowtiedox.io/feed"
+		},
+		{
+			"title": "BowTiedPlayer",
+			"url": "https://bowtiedplayer.substack.com/feed"
+		},
+		{
+			"title": "BowTiedTetra",
+			"url": "https://www.tetramarketing.io/feed"
 		},
 		{
 			"title": "Bradley Taunt",
@@ -41,12 +81,24 @@
 			"url": "https://blog.cloudflare.com/rss"
 		},
 		{
+			"title": "Control D",
+			"url": "https://controld.com/blog/rss/"
+		},
+		{
+			"title": "Google DeepMind",
+			"url": "https://blog.google/technology/google-deepmind/rss/"
+		},
+		{
 			"title": "Google Security",
-			"url": "https://security.googleblog.com/feeds/posts/default"
+			"url": "https://googleonlinesecurity.blogspot.com/atom.xml"
 		},
 		{
 			"title": "GrapheneOS",
 			"url": "https://grapheneos.org/releases.atom"
+		},
+		{
+			"title": "GrapheneOS Bluesky",
+			"url": "https://bsky.app/profile/did:plc:kym5w7pcv4v7xbz7lvbj24na/rss"
 		},
 		{
 			"title": "Hacker News",
@@ -55,6 +107,10 @@
 		{
 			"title": "Homebrew",
 			"url": "https://brew.sh/atom.xml"
+		},
+		{
+			"title": "iVPN",
+			"url": "https://www.ivpn.net/en/blog/index.xml"
 		},
 		{
 			"title": "Kagi",
@@ -85,12 +141,24 @@
 			"url": "https://mullvad.net/en/blog/feed/atom/"
 		},
 		{
+			"title": "Obscura",
+			"url": "https://obscura.net/blog/rss.xml"
+		},
+		{
+			"title": "OpenAI",
+			"url": "https://openai.com/news/rss.xml"
+		},
+		{
 			"title": "PrivacyGuides (posts)",
 			"url": "https://blog.privacyguides.org/rss"
 		},
 		{
 			"title": "PrivacyGuides.org (changelog)",
 			"url": "https://github.com/privacyguides/privacyguides.org/releases.atom"
+		},
+		{
+			"title": "PrivateLLM Bluesky",
+			"url": "https://bsky.app/profile/did:plc:4y2opojk5ccbt5f7owqmlwvu/rss"
 		},
 		{
 			"title": "PrivSec",
@@ -101,12 +169,24 @@
 			"url": "https://proton.me/blog/feed"
 		},
 		{
+			"title": "Qwen",
+			"url": "https://qwenlm.github.io/blog/index.xml"
+		},
+		{
 			"title": "Schneier on Security",
 			"url": "https://www.schneier.com/feed/atom/"
 		},
 		{
+			"title": "Signal",
+			"url": "https://signal.org/blog/rss.xml"
+		},
+		{
 			"title": "Simon Willison",
 			"url": "https://simonwillison.net/atom/everything/"
+		},
+		{
+			"title": "SimpleX Chat",
+			"url": "https://simplex.chat/feed.rss"
 		},
 		{
 			"title": "Techmeme",
@@ -123,6 +203,10 @@
 		{
 			"title": "Zed.dev",
 			"url": "https://zed.dev/blog.rss"
+		},
+		{
+			"title": "Zed Bluesky",
+			"url": "https://bsky.app/profile/did:plc:h4nlizncnhhcq7mwpz3uuvzk/rss"
 		}
 	]
 }
