@@ -17,6 +17,10 @@
 			"url": "https://developer.apple.com/news/releases/rss/releases.rss"
 		},
 		{
+			"title": "Apple Security",
+			"url": "https://security.apple.com/blog/feed.rss"
+		},
+		{
 			"title": "Ars Technica",
 			"url": "https://feeds.arstechnica.com/arstechnica/index"
 		},
@@ -195,6 +199,10 @@
 		{
 			"title": "VS Code",
 			"url": "https://code.visualstudio.com/feed.xml"
+		},
+		{
+			"title": "Webkit",
+			"url": "https://webkit.org/feed/"
 		},
 		{
 			"title": "Wipr",
