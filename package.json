@@ -1,11 +1,12 @@
 {
 	"name": "cloud-rss-worker",
-	"version": "0.0.0",
-	"private": true,
+	"license": "MIT",
+	"version": "0.1.0",
 	"scripts": {
 		"deploy": "wrangler deploy",
 		"dev": "wrangler dev --test-scheduled",
 		"start": "wrangler dev",
+		"cron": "curl \"http://localhost:8787/__scheduled?cron=*+*+*+*+*\"",
 		"test": "vitest",
 		"cf-typegen": "wrangler types"
 	},
