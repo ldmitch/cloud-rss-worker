@@ -101,10 +101,6 @@
 			"url": "https://bsky.app/profile/did:plc:kym5w7pcv4v7xbz7lvbj24na/rss"
 		},
 		{
-			"title": "Hacker News",
-			"url": "https://hnrss.org/frontpage"
-		},
-		{
 			"title": "Homebrew",
 			"url": "https://brew.sh/atom.xml"
 		},
