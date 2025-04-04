@@ -36,7 +36,7 @@ pnpm run cf-typegen
 - Add or remove feed URLs
 - Each entry must have a `title` and `url` field, where the `url` is a valid RSS/ATOM feed
 
-5. Start the development server with scheduled execution
+5. Start the development server, exposing an endpoint to manual trigger the scheduled function
 ```bash
 pnpm run dev
 ```
