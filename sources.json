@@ -153,6 +153,14 @@
 			"url": "https://openai.com/news/rss.xml"
 		},
 		{
+			"title": "Lionel Dricot (EN)",
+			"url": "https://ploum.net/atom_en.xml"
+		},
+		{
+			"title": "Lionel Dricot (FR)",
+			"url": "https://ploum.net/atom_fr.xml"
+		},
+		{
 			"title": "PrivacyGuides (posts)",
 			"url": "https://blog.privacyguides.org/rss"
 		},
