@@ -153,6 +153,10 @@
 			"url": "https://openai.com/news/rss.xml"
 		},
 		{
+			"title": "Overreacted",
+			"url": "https://overreacted.io/rss.xml"
+		},
+		{
 			"title": "Lionel Dricot (EN)",
 			"url": "https://ploum.net/atom_en.xml"
 		},
