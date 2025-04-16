@@ -93,6 +93,10 @@
 			"url": "https://controld.com/blog/rss/"
 		},
 		{
+			"title": "GitHub Copilot",
+			"utl": "https://github.blog/changelog/label/copilot/feed/"
+		},
+		{
 			"title": "Google DeepMind",
 			"url": "https://blog.google/technology/google-deepmind/rss/"
 		},
