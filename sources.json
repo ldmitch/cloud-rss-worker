@@ -93,6 +93,10 @@
 			"url": "https://controld.com/blog/rss/"
 		},
 		{
+			"title": "Ente",
+			"url": "https://ente.io/rss.xml"
+		},
+		{
 			"title": "GitHub Copilot",
 			"utl": "https://github.blog/changelog/label/copilot/feed/"
 		},
