@@ -149,6 +149,10 @@
 			"url": "https://mullvad.net/en/blog/feed/atom/"
 		},
 		{
+			"title": "Notesnook",
+			"url": "https://blog.notesnook.com/feed.xml"
+		},
+		{
 			"title": "Obscura",
 			"url": "https://obscura.net/blog/rss.xml"
 		},
