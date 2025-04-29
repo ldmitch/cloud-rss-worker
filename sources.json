@@ -205,6 +205,10 @@
 			"url": "https://www.schneier.com/feed/atom/"
 		},
 		{
+			"title": "Secureblue",
+			"url": "https://github.com/secureblue/secureblue/releases.atom"
+		},
+		{
 			"title": "Signal",
 			"url": "https://signal.org/blog/rss.xml"
 		},
