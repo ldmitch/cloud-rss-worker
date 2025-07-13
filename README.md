@@ -4,7 +4,7 @@ A backend service for fetching, parsing, and storing RSS/ATOM feeds in Cloudflar
 
 ## Overview
 
-Cloud RSS Worker is the backend component for [Cloud RSS](https://github.com/ldmitch/cloud-rss), fetching articles from various RSS/ATOM feeds every 30 minutes and storing them in Cloudflare KV storage. The Worker parses feed content, extracts relevant article metadata, and makes this data available to the front-end application.
+Cloud RSS Worker is the backend component for [Cloud RSS](https://github.com/ldmitch/cloud-rss), fetching articles from various RSS/ATOM feeds every 15 minutes and storing them in Cloudflare KV storage. The Worker parses feed content, extracts relevant article metadata, and makes this data available to the front-end application.
 
 The service maintains a rolling 48-hour window of articles. All fetching happens through Cloudflare Workers, providing privacy benefits by masking user IP addresses from feed providers.
 
