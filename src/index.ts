@@ -262,7 +262,7 @@ export default {
 			return new Response(JSON.stringify(articles), {
 				headers: {
 					"Content-Type": "application/json",
-					"Cache-Control": "public, max-age=300, s-maxage=1800, stale-while-revalidate=3600",
+					"Cache-Control": "public, max-age=300, s-maxage=900",
 				},
 			});
 		} catch (error) {
