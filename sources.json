@@ -33,42 +33,6 @@
 			"url": "https://www.bitdefender.com/blog/api/rss/labs/"
 		},
 		{
-			"title": "BowTiedBull",
-			"url": "https://bowtiedbull.io/feed"
-		},
-		{
-			"title": "BowTiedF'er",
-			"url": "https://effsigive.substack.com/feed"
-		},
-		{
-			"title": "BowTiedFox",
-			"url": "https://www.bowtiedfox.com/feed"
-		},
-		{
-			"title": "BowTiedGerman",
-			"url": "https://turbofashion.substack.com/feed"
-		},
-		{
-			"title": "BowTiedMara",
-			"url": "https://www.wifiagency.io/feed"
-		},
-		{
-			"title": "BowTiedOpossum",
-			"url": "https://newsletter.bowtiedopossum.com/feed"
-		},
-		{
-			"title": "BowTiedOx",
-			"url": "https://www.bowtiedox.io/feed"
-		},
-		{
-			"title": "BowTiedPlayer",
-			"url": "https://bowtiedplayer.substack.com/feed"
-		},
-		{
-			"title": "BowTiedTetra",
-			"url": "https://www.tetramarketing.io/feed"
-		},
-		{
 			"title": "Bradley Taunt",
 			"url": "https://btxx.org/index.rss"
 		},
@@ -97,10 +61,6 @@
 			"url": "https://ente.io/rss.xml"
 		},
 		{
-			"title": "GitHub Copilot",
-			"utl": "https://github.blog/changelog/label/copilot/feed/"
-		},
-		{
 			"title": "Google DeepMind",
 			"url": "https://blog.google/technology/google-deepmind/rss/"
 		},
@@ -111,10 +71,6 @@
 		{
 			"title": "GrapheneOS",
 			"url": "https://grapheneos.org/releases.atom"
-		},
-		{
-			"title": "GrapheneOS Bluesky",
-			"url": "https://bsky.app/profile/did:plc:kym5w7pcv4v7xbz7lvbj24na/rss"
 		},
 		{
 			"title": "Homebrew",
@@ -185,10 +141,6 @@
 			"url": "https://github.com/privacyguides/privacyguides.org/releases.atom"
 		},
 		{
-			"title": "PrivateLLM Bluesky",
-			"url": "https://bsky.app/profile/did:plc:4y2opojk5ccbt5f7owqmlwvu/rss"
-		},
-		{
 			"title": "PrivSec",
 			"url": "https://privsec.dev/index.xml"
 		},
@@ -221,10 +173,6 @@
 			"url": "https://simplex.chat/feed.rss"
 		},
 		{
-			"title": "Techmeme",
-			"url": "https://www.techmeme.com/feed.xml"
-		},
-		{
 			"title": "VS Code",
 			"url": "https://code.visualstudio.com/feed.xml"
 		},
@@ -240,9 +188,5 @@
 			"title": "Zed.dev",
 			"url": "https://zed.dev/blog.rss"
 		},
-		{
-			"title": "Zed Bluesky",
-			"url": "https://bsky.app/profile/did:plc:h4nlizncnhhcq7mwpz3uuvzk/rss"
-		}
 	]
 }
