@@ -45,26 +45,6 @@
 			"url": "https://brave.com/blog/index.xml"
 		},
 		{
-			"title": "CBC - British Columbia",
-			"url": "https://www.cbc.ca/webfeed/rss/rss-canada-britishcolumbia"
-		},
-		{
-			"title": "CBC - Business",
-			"url": "https://www.cbc.ca/webfeed/rss/rss-business"
-		},
-		{
-			"title": "CBC - Politics",
-			"url": "https://www.cbc.ca/webfeed/rss/rss-politics"
-		},
-		{
-			"title": "CBC - Technology",
-			"url": "https://www.cbc.ca/webfeed/rss/rss-technology"
-		},
-		{
-			"title": "CBC - World",
-			"url": "https://www.cbc.ca/webfeed/rss/rss-world"
-		},
-		{
 			"title": "Chromium",
 			"url": "https://blog.chromium.org/atom.xml"
 		},
@@ -83,26 +63,6 @@
 		{
 			"title": "Ente",
 			"url": "https://ente.io/rss.xml"
-		},
-		{
-			"title": "The Globe and Mail - British Columbia",
-			"url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/canada/british-columbia/"
-		},
-		{
-			"title": "The Globe and Mail - Canadian Industry",
-			"url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/industry-news/"
-		},
-		{
-			"title": "The Globe and Mail - Politics",
-			"url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/politics/"
-		},
-		{
-			"title": "The Globe and Mail - Technology",
-			"url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/business/technology/"
-		},
-		{
-			"title": "The Globe and Mail - World",
-			"url": "https://www.theglobeandmail.com/arc/outboundfeeds/rss/category/world/"
 		},
 		{
 			"title": "Google DeepMind",
