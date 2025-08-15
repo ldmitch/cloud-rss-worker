@@ -157,6 +157,10 @@
 			"url": "https://qwenlm.github.io/blog/index.xml"
 		},
 		{
+			"title": "Raycast",
+			"url": "https://raycast.com/changelog/feed.xml"
+		},
+		{
 			"title": "Schneier on Security",
 			"url": "https://www.schneier.com/feed/atom/"
 		},
