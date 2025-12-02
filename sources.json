@@ -9,10 +9,6 @@
 			"url": "https://adguard-vpn.com/blog/rss-en.xml"
 		},
 		{
-			"title": "AlternativeTo",
-			"url": "https://feed.alternativeto.net/news/all/"
-		},
-		{
 			"title": "Andrej Karpathy",
 			"url": "https://karpathy.bearblog.dev/feed/"
 		},
@@ -25,16 +21,8 @@
 			"url": "https://security.apple.com/blog/feed.rss"
 		},
 		{
-			"title": "Ars Technica",
-			"url": "https://feeds.arstechnica.com/arstechnica/index"
-		},
-		{
 			"title": "Bitdefender Labs",
 			"url": "https://www.bitdefender.com/blog/api/rss/labs/"
-		},
-		{
-			"title": "Blockworks",
-			"url": "https://blockworks.co/feed"
 		},
 		{
 			"title": "Bradley Taunt",
@@ -101,10 +89,6 @@
 			"url": "https://lwn.net/headlines/rss"
 		},
 		{
-			"title": "MacRumors",
-			"url": "https://feeds.macrumors.com/MacRumors-All"
-		},
-		{
 			"title": "Malwarebytes Labs",
 			"url": "https://blog.malwarebytes.com/feed/"
 		},
@@ -129,12 +113,8 @@
 			"url": "https://overreacted.io/rss.xml"
 		},
 		{
-			"title": "Lionel Dricot (EN)",
+			"title": "Lionel Dricot",
 			"url": "https://ploum.net/atom_en.xml"
-		},
-		{
-			"title": "Lionel Dricot (FR)",
-			"url": "https://ploum.net/atom_fr.xml"
 		},
 		{
 			"title": "PrivacyGuides (posts)",
@@ -159,6 +139,10 @@
 		{
 			"title": "Raycast",
 			"url": "https://raycast.com/changelog/feed.xml"
+		},
+		{
+			"title": "RethinkDNS",
+			"url": "https://blog.rethinkdns.com/rss.xml"
 		},
 		{
 			"title": "Schneier on Security",
