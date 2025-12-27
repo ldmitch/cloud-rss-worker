@@ -123,8 +123,18 @@ async function putWithRetries(
 	}
 }
 
+// Represents an article parsed from a feed
+interface ParsedArticle {
+	id: string;
+	url: string;
+	title: string;
+	snippet: string;
+	source: string;
+	sourceUrl: string;
+}
+
 // Function: Fetch and parse RSS/ATOM feeds
-async function fetchAndParseFeed(url: string, sourceName: string): Promise<Article[]> {
+async function fetchAndParseFeed(url: string, sourceName: string): Promise<ParsedArticle[]> {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) {
@@ -140,7 +150,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 			throw new Error(`Failed to parse XML for ${url}: ${parserError.textContent}`);
 		}
 
-		const articles: Article[] = [];
+		const articles: ParsedArticle[] = [];
 
 		// Check if this is an RSS feed (has <item> elements)
 		const rssItems = xmlDoc.getElementsByTagName("item");
@@ -152,22 +162,18 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 				const link = item.getElementsByTagName("link")[0]?.textContent || "";
 				const descriptionText = item.getElementsByTagName("description")[0]?.textContent || "";
 				const description = decodeHtmlEntities(stripCDATA(descriptionText));
-				const pubDate = item.getElementsByTagName("pubDate")[0]?.textContent || "";
 
-				if (link && pubDate) {
-					if (isWithinLast48Hours(pubDate)) {
-						articles.push({
-							id: hashUrl(link),
-							url: link,
-							title: title || sourceName,
-							snippet: description,
-							source: sourceName,
-							sourceUrl: url,
-							publicationDatetime: pubDate,
-						});
-					}
+				if (link) {
+					articles.push({
+						id: hashUrl(link),
+						url: link,
+						title: title || sourceName,
+						snippet: description,
+						source: sourceName,
+						sourceUrl: url,
+					});
 				} else {
-					console.log(`Skipping article with missing fields: ${title} (${url})`);
+					console.log(`Skipping article with missing link: ${title} (${url})`);
 				}
 			}
 		} else {
@@ -204,22 +210,15 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Artic
 					const summary = decodeHtmlEntities(stripCDATA(summaryText));
 					const description = content || summary;
 
-					const published = entry.getElementsByTagName("published")[0]?.textContent || "";
-					const updated = entry.getElementsByTagName("updated")[0]?.textContent || "";
-					const pubDate = published || updated;
-
-					if (link && title && pubDate) {
-						if (isWithinLast48Hours(pubDate)) {
-							articles.push({
-								id: hashUrl(link),
-								url: link,
-								title,
-								snippet: description,
-								source: sourceName,
-								sourceUrl: url,
-								publicationDatetime: pubDate,
-							});
-						}
+					if (link && title) {
+						articles.push({
+							id: hashUrl(link),
+							url: link,
+							title,
+							snippet: description,
+							source: sourceName,
+							sourceUrl: url,
+						});
 					} else {
 						console.log(`Skipping article with missing fields: ${title} (${url})`);
 					}
@@ -275,17 +274,58 @@ export default {
 	async scheduled(controller: ScheduledController, env: Env, ctx: ExecutionContext): Promise<void> {
 		console.log("Running scheduled refresh of articles");
 
+		// Load existing articles to preserve their fetch timestamps
+		let existingArticlesMap = new Map<string, Article>();
+		try {
+			const existingJson = await env.ARTICLES.get("all_articles");
+			if (existingJson) {
+				const existingArticles: Article[] = JSON.parse(existingJson);
+				for (const article of existingArticles) {
+					existingArticlesMap.set(article.id, article);
+				}
+				console.log(`Loaded ${existingArticlesMap.size} existing articles from KV`);
+			}
+		} catch (error) {
+			console.warn("Could not load existing articles, treating all as new:", error);
+		}
+
 		const fetchPromises = sources.map((source) =>
 			fetchAndParseFeed(source.url, source.name).catch((error) => {
-				console.error(`Scheduled task: Error processing <span class="math-inline">\{source\.name\} \(</span>{source.url})`, error);
-				return [] as Article[]; // Ensure failed promises resolve to an empty array
+				console.error(`Scheduled task: Error processing ${source.name} (${source.url})`, error);
+				return [] as ParsedArticle[]; // Ensure failed promises resolve to an empty array
 			}),
 		);
 
 		const results = await Promise.all(fetchPromises);
-		const allArticles = results.flat(); // Flatten the array of arrays
+		const parsedArticles = results.flat(); // Flatten the array of arrays
 
-		allArticles.sort((a, b) => {
+		// Current timestamp for new articles
+		const now = new Date();
+		const nowIso = now.toISOString();
+
+		// Merge parsed articles with existing data, preserving original fetch timestamps
+		const allArticles: Article[] = parsedArticles.map((parsed) => {
+			const existing = existingArticlesMap.get(parsed.id);
+			if (existing) {
+				// Article already exists - preserve its original fetch timestamp
+				// but update other fields in case they changed
+				return {
+					...parsed,
+					publicationDatetime: existing.publicationDatetime,
+				};
+			} else {
+				// New article - assign current timestamp as fetch time
+				return {
+					...parsed,
+					publicationDatetime: nowIso,
+				};
+			}
+		});
+
+		// Filter to only include articles fetched within the last 48 hours
+		const recentArticles = allArticles.filter((article) => isWithinLast48Hours(article.publicationDatetime));
+
+		recentArticles.sort((a, b) => {
 			try {
 				const dateA = new Date(a.publicationDatetime).getTime();
 				const dateB = new Date(b.publicationDatetime).getTime();
@@ -300,19 +340,20 @@ export default {
 			}
 		});
 
-		const articlesJson = JSON.stringify(allArticles);
+		const articlesJson = JSON.stringify(recentArticles);
 		const currentTimestamp = Math.floor(Date.now() / 1000).toString();
 
 		try {
 			// Use putWithRetries for KV writes
-			console.log(`Attempting to write ${allArticles.length} articles to KV...`);
+			console.log(`Attempting to write ${recentArticles.length} articles to KV...`);
 			await putWithRetries(env.ARTICLES, "all_articles", articlesJson);
 
 			console.log(`Attempting to write last_update timestamp (${currentTimestamp}) to KV...`);
 			await putWithRetries(env.ARTICLES, "last_update", currentTimestamp);
 
 			// Log final success only if both puts succeed after retries
-			console.log(`Successfully refreshed ${allArticles.length} articles and updated timestamp at ${new Date().toISOString()}`);
+			const newCount = parsedArticles.filter((p) => !existingArticlesMap.has(p.id)).length;
+			console.log(`Successfully refreshed articles: ${recentArticles.length} total, ${newCount} new, updated at ${now.toISOString()}`);
 		} catch (error) {
 			// This catch block executes if putWithRetries ultimately fails after all attempts
 			console.error("Scheduled task failed: Could not write to KV after multiple retries.", error);
