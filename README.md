@@ -6,7 +6,7 @@ A backend service for fetching, parsing, and storing RSS/ATOM feeds in Cloudflar
 
 Cloud RSS Worker is the backend component for [Cloud RSS](https://github.com/ldmitch/cloud-rss), fetching articles from various RSS/ATOM feeds every 15 minutes and storing them in Cloudflare KV storage. The Worker parses feed content, extracts relevant article metadata, and makes this data available to the front-end application.
 
-The service maintains a rolling 48-hour window of articles. All fetching happens through Cloudflare Workers, providing privacy benefits by masking user IP addresses from feed providers.
+The list of available articles published in the past seven days is viewable.
 
 ## Setup and local development
 
@@ -17,31 +17,37 @@ The service maintains a rolling 48-hour window of articles. All fetching happens
 ### Local development
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/ldmitch/cloud-rss-worker
 cd cloud-rss-worker
 ```
 
 2. Install dependencies
+
 ```bash
 pnpm install
 ```
 
 3. Generate types
+
 ```bash
 pnpm run cf-typegen
 ```
 
 4. Update [sources.json](./sources.json) as needed
+
 - Add or remove feed URLs
 - Each entry must have a `title` and `url` field, where the `url` is a valid RSS/ATOM feed
 
 5. Start the development server, exposing an endpoint to manual trigger the scheduled function
+
 ```bash
 pnpm run dev
 ```
 
 6. Manually trigger the scheduled function
+
 ```bash
 pnpm run cron
 ```

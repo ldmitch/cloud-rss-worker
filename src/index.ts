@@ -131,6 +131,7 @@ interface ParsedArticle {
 	snippet: string;
 	source: string;
 	sourceUrl: string;
+	sourcePublicationDate: string;
 }
 
 // Function: Fetch and parse RSS/ATOM feeds
@@ -163,6 +164,10 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Parse
 				const descriptionText = item.getElementsByTagName("description")[0]?.textContent || "";
 				const description = decodeHtmlEntities(stripCDATA(descriptionText));
 
+				// Extract publication date (pubDate is standard for RSS)
+				const pubDateText = item.getElementsByTagName("pubDate")[0]?.textContent || "";
+				const sourcePublicationDate = new Date(pubDateText).toISOString();
+
 				if (link) {
 					articles.push({
 						id: hashUrl(link),
@@ -171,6 +176,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Parse
 						snippet: description,
 						source: sourceName,
 						sourceUrl: url,
+						sourcePublicationDate,
 					});
 				} else {
 					console.log(`Skipping article with missing link: ${title} (${url})`);
@@ -210,6 +216,12 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Parse
 					const summary = decodeHtmlEntities(stripCDATA(summaryText));
 					const description = content || summary;
 
+					// Extract publication date (published or updated for ATOM)
+					const publishedText = entry.getElementsByTagName("published")[0]?.textContent || "";
+					const updatedText = entry.getElementsByTagName("updated")[0]?.textContent || "";
+					const dateText = publishedText || updatedText;
+					const sourcePublicationDate = new Date(dateText).toISOString();
+
 					if (link && title) {
 						articles.push({
 							id: hashUrl(link),
@@ -218,6 +230,7 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Parse
 							snippet: description,
 							source: sourceName,
 							sourceUrl: url,
+							sourcePublicationDate,
 						});
 					} else {
 						console.log(`Skipping article with missing fields: ${title} (${url})`);
@@ -233,17 +246,37 @@ async function fetchAndParseFeed(url: string, sourceName: string): Promise<Parse
 	}
 }
 
-// Helper: Check if a publication date is within the last 48 hours
-function isWithinLast48Hours(dateString: string): boolean {
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+// Helper: Check if a date is within the last 7 days
+function isWithinLast7Days(dateString: string): boolean {
 	try {
-		const pubDate = new Date(dateString);
+		const date = new Date(dateString);
 		const now = new Date();
-		const hoursDifference = (now.getTime() - pubDate.getTime()) / (1000 * 60 * 60);
-		return hoursDifference <= 48;
+		return now.getTime() - date.getTime() <= SEVEN_DAYS_MS;
 	} catch (error) {
 		console.error(`Error parsing date: ${dateString}`, error);
 		return false;
 	}
+}
+
+// Helper: Determine the publication datetime for an article
+// Uses fetched time only if the source publication date is within the last 7 days
+// Otherwise, uses the source publication date (to prevent old articles from appearing as new)
+function determinePublicationDatetime(sourcePublicationDate: string | null, fetchedDatetime: string): string {
+	if (!sourcePublicationDate) {
+		// No source date available, use fetched time
+		return fetchedDatetime;
+	}
+
+	if (isWithinLast7Days(sourcePublicationDate)) {
+		// Source date is recent, use fetched time
+		return fetchedDatetime;
+	}
+
+	// Source date is older than 7 days, use source date instead
+	// This prevents old articles from appearing at the top when re-added
+	return sourcePublicationDate;
 }
 
 export default {
@@ -303,27 +336,29 @@ export default {
 		const now = new Date();
 		const nowIso = now.toISOString();
 
-		// Merge parsed articles with existing data, preserving original fetch timestamps
+		// Merge parsed articles with existing data, preserving original publication timestamps
 		const allArticles: Article[] = parsedArticles.map((parsed) => {
 			const existing = existingArticlesMap.get(parsed.id);
 			if (existing) {
-				// Article already exists - preserve its original fetch timestamp
+				// Article already exists - preserve its original publication timestamp
 				// but update other fields in case they changed
 				return {
 					...parsed,
 					publicationDatetime: existing.publicationDatetime,
 				};
 			} else {
-				// New article - assign current timestamp as fetch time
+				// New article - determine publication datetime based on source date
+				// If source date is within last 7 days, use fetched time
+				// Otherwise, use source date to prevent old articles appearing as new
 				return {
 					...parsed,
-					publicationDatetime: nowIso,
+					publicationDatetime: determinePublicationDatetime(parsed.sourcePublicationDate, nowIso),
 				};
 			}
 		});
 
-		// Filter to only include articles fetched within the last 48 hours
-		const recentArticles = allArticles.filter((article) => isWithinLast48Hours(article.publicationDatetime));
+		// Filter to only include articles from the last 7 days
+		const recentArticles = allArticles.filter((article) => isWithinLast7Days(article.publicationDatetime));
 
 		recentArticles.sort((a, b) => {
 			try {
